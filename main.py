@@ -6,7 +6,7 @@ from telegram.ext import (
     ContextTypes, filters
 )
 
-# Prende il token dalle variabili d'ambiente (Render -> Environment)
+# --- CONFIG ---
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # --- Comandi base ---
@@ -111,7 +111,7 @@ async def orari(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📞 Telefono: 333 0000000"
     )
 
-# --- Costruzione app PTB ---
+# --- Costruzione applicazione ---
 def build_application() -> Application:
     if not BOT_TOKEN:
         raise RuntimeError("BOT_TOKEN mancante nelle variabili d'ambiente")
@@ -136,17 +136,19 @@ def build_application() -> Application:
     )
     app.add_handler(conv)
 
-    # Comandi base / FAQ
+    # Comandi base
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("costi", costi))
     app.add_handler(CommandHandler("orari", orari))
+
     return app
 
-# Solo per test locale con polling (non usato su Render)
+# --- Avvio in locale (polling) ---
 if __name__ == "__main__":
     application = build_application()
     application.run_polling()
+
 
 
 
